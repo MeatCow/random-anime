@@ -5,35 +5,35 @@ const GET_URL = "https://www.randomanime.org/api/custom-list/get/";
 const MAL_USERNAME = "yaxkin";
 
 const GENRES = {
-  1: "Action",
-  2: "Adventure",
-  3: "Comedy",
-  4: "Drama",
-  5: "Ecchi",
-  6: "Fantasy",
-  7: "Game",
-  8: "Harem",
-  9: "Historical",
-  10: "Horror",
-  11: "Isekai",
-  12: "Magic",
-  13: "Mecha",
-  14: "Military",
-  15: "Music",
-  16: "Mystery",
-  17: "Parody",
-  18: "Psychological",
-  19: "Romance",
-  20: "School",
-  21: "Sci-Fi",
-  22: "Seinen",
-  23: "Shoujo",
-  24: "Shounen",
-  25: "Slice of Life",
-  26: "Sports",
-  27: "Supernatural",
-  28: "Yaoi",
-  29: "Yuri",
+  "Action": 1,
+  "Adventure": 2,
+  "Comedy": 3,
+  "Drama": 4,
+  "Ecchi": 5,
+  "Fantasy": 6,
+  "Game": 7,
+  "Harem": 8,
+  "Historical": 9,
+  "Horror": 10,
+  "Isekai": 11,
+  "Magic": 12,
+  "Mecha": 13,
+  "Military": 14,
+  "Music": 15,
+  "Mystery": 16,
+  "Parody": 17,
+  "Psychological": 18,
+  "Romance": 19,
+  "School": 20,
+  "Sci-Fi": 21,
+  "Seinen": 22,
+  "Shoujo": 23,
+  "Shounen": 24,
+  "Slice of Life": 25,
+  "Sports": 26,
+  "Supernatural": 27,
+  "Yaoi": 28,
+  "Yuri": 29,
 };
 
 /**
@@ -45,7 +45,7 @@ const getLists = (genre) => {
     let data = {
       "listInfo": {
         "base": "al-mal",
-        "includedGenres": { 0: genre },
+        "includedGenres": { 0: GENRES[genre] },
         "excludedGenres": {},
         "alMal": "al",
         "alMalUsername": MAL_USERNAME,
@@ -65,7 +65,6 @@ const getLists = (genre) => {
         if (err) {
           return reject(err);
         }
-        body["genre"] = GENRES[genre];
         resolve(body);
       });
   });
@@ -94,22 +93,26 @@ const getCount = (listInfo) => {
   });
 };
 
+const getSingleCount = (genre) => {
+
+};
+
 /**
  * Performs a network fetch against the random anime list website.
  * @returns A promise that will contain an object of genres with their count of animes
  */
-const getCounts = () => {
+const getAllCounts = () => {
   return new Promise((resolve, reject) => {
 
     const genreCount = {};
     const promises = [];
 
-    for (const id in GENRES) {
+    for (const genre in GENRES) {
       promises.push(
-        getLists(id)
+        getLists(genre)
           .then(getCount)
           .then((body) => {
-            genreCount[GENRES[id]] = body.result.list_ids.split(",").length;
+            genreCount[genre] = body.result.list_ids.split(",").length;
           })
           .catch((err) => {
             console.log("Something bad happened!\n", err);
@@ -128,4 +131,4 @@ const getCounts = () => {
   });
 };
 
-module.exports = { getCounts };
+module.exports = { getSingleCount, getAllCounts };
