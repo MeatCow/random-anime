@@ -5,35 +5,35 @@ const GET_URL = "https://www.randomanime.org/api/custom-list/get/";
 const MAL_USERNAME = "yaxkin";
 
 const GENRES = {
-  "Action": 1,
-  "Adventure": 2,
-  "Comedy": 3,
-  "Drama": 4,
-  "Ecchi": 5,
-  "Fantasy": 6,
-  "Game": 7,
-  "Harem": 8,
-  "Historical": 9,
-  "Horror": 10,
-  "Isekai": 11,
-  "Magic": 12,
-  "Mecha": 13,
-  "Military": 14,
-  "Music": 15,
-  "Mystery": 16,
-  "Parody": 17,
-  "Psychological": 18,
-  "Romance": 19,
-  "School": 20,
-  "Sci-Fi": 21,
-  "Seinen": 22,
-  "Shoujo": 23,
-  "Shounen": 24,
-  "Slice of Life": 25,
-  "Sports": 26,
-  "Supernatural": 27,
-  "Yaoi": 28,
-  "Yuri": 29,
+  "action": 1,
+  "adventure": 2,
+  "comedy": 3,
+  "drama": 4,
+  "ecchi": 5,
+  "fantasy": 6,
+  "game": 7,
+  "harem": 8,
+  "historical": 9,
+  "horror": 10,
+  "isekai": 11,
+  "magic": 12,
+  "mecha": 13,
+  "military": 14,
+  "music": 15,
+  "mystery": 16,
+  "parody": 17,
+  "psychological": 18,
+  "romance": 19,
+  "school": 20,
+  "sci-Fi": 21,
+  "seinen": 22,
+  "shoujo": 23,
+  "shounen": 24,
+  "slice of Life": 25,
+  "sports": 26,
+  "supernatural": 27,
+  "yaoi": 28,
+  "yuri": 29,
 };
 
 /**
@@ -93,8 +93,26 @@ const getCount = (listInfo) => {
   });
 };
 
+/**
+ * Performs a network fetch for a single genre
+ * @param {String} genre lowercase string, like isekai
+ * @returns an object like { isekai: 349 }
+ */
 const getSingleCount = (genre) => {
+  return new Promise((resolve, reject) => {
+    const genreCount = {};
 
+    getLists(genre)
+      .then(getCount)
+      .then((body) => {
+        genreCount[genre] = body.result.list_ids.split(",").length;
+        resolve(genreCount);
+      })
+      .catch((err) => {
+        console.log("Something bad happened!\n", err);
+        reject(err);
+      });
+  });
 };
 
 /**
@@ -123,7 +141,7 @@ const getAllCounts = () => {
     Promise.all(promises)
       .then(() => {
         console.log(genreCount);
-        resolve(genreCount);
+        resolve(Object.fromEntries(Object.entries(genreCount).sort()));
       })
       .catch((err) => {
         reject(err);
@@ -131,4 +149,4 @@ const getAllCounts = () => {
   });
 };
 
-module.exports = { getSingleCount, getAllCounts };
+module.exports = { getSingleCount, getAllCounts, GENRES };
