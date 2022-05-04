@@ -2,7 +2,7 @@ const request = require('request');
 
 const POST_URL = "https://www.randomanime.org/api/custom-list/post/";
 const GET_URL = "https://www.randomanime.org/api/custom-list/get/";
-const MAL_USERNAME = "yaxkin";
+let MAL_USERNAME = "yaxkin";
 
 const GENRES = {
   "action": 1,
@@ -140,8 +140,9 @@ const getAllCounts = () => {
 
     Promise.all(promises)
       .then(() => {
-        console.log(genreCount);
-        resolve(Object.fromEntries(Object.entries(genreCount).sort()));
+        const sortedGenreCount = Object.fromEntries(Object.entries(genreCount).sort());
+        console.log(sortedGenreCount);
+        resolve(sortedGenreCount);
       })
       .catch((err) => {
         reject(err);
