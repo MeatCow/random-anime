@@ -1,96 +1,90 @@
-const request = require('request');
+import fetch from "node-fetch";
 
-const POST_URL = "https://www.randomanime.org/api/custom-list/post/";
+const POST_URL = "https://www.randomanime.org/api/list/custom";
 const GET_URL = "https://www.randomanime.org/api/custom-list/get/";
 let MAL_USERNAME = "yaxkin";
 
-const GENRES = {
-  "action": 1,
-  "adventure": 2,
-  "comedy": 3,
-  "drama": 4,
-  "ecchi": 5,
-  "fantasy": 6,
-  "game": 7,
-  "harem": 8,
-  "historical": 9,
-  "horror": 10,
-  "isekai": 11,
-  "magic": 12,
-  "mecha": 13,
-  "military": 14,
-  "music": 15,
-  "mystery": 16,
-  "parody": 17,
-  "psychological": 18,
-  "romance": 19,
-  "school": 20,
-  "sci-Fi": 21,
-  "seinen": 22,
-  "shoujo": 23,
-  "shounen": 24,
-  "slice of Life": 25,
-  "sports": 26,
-  "supernatural": 27,
-  "yaoi": 28,
-  "yuri": 29,
-};
+const GENRES = [
+  "Action",
+  "Adventure",
+  "Comedy",
+  "Drama",
+  "Ecchi",
+  "Fantasy",
+  "Game",
+  "Harem",
+  "Historical",
+  "Horror",
+  "Isekai",
+  "Magic",
+  "Mecha",
+  "Military",
+  "Music",
+  "Mystery",
+  "Parody",
+  "Psychological",
+  "Romance",
+  "School",
+  "Sci-Fi",
+  "Seinen",
+  "Shoujo",
+  "Shounen",
+  "Slice of Life",
+  "Sports",
+  "Supernatural",
+  "Yaoi",
+  "Yuri",
+];
 
 /**
- * Id of the genre to look up, ie. 7 for "Game"
+ * String of the Genre to lookup, "Action"
  * @param {Number} genre
  */
 const getLists = (genre) => {
-  return new Promise((resolve, reject) => {
-    let data = {
-      "listInfo": {
-        "base": "al-mal",
-        "includedGenres": { 0: GENRES[genre] },
-        "excludedGenres": {},
-        "alMal": "al",
-        "alMalUsername": MAL_USERNAME,
-        "alMalList": "",
-        "alMalHideShow": "false"
-      },
-      "lang": "any"
-    };
-
-    request.post(
-      {
-        url: POST_URL,
-        body: data,
-        json: true
-      },
-      (err, res, body) => {
-        if (err) {
-          return reject(err);
-        }
-        resolve(body);
-      });
-  });
+  return fetch("https://www.randomanime.org/api/list/custom", {
+    "headers": {
+      "accept": "application/json, text/plain, */*",
+      "accept-language": "en-US,en;q=0.9,fr;q=0.8,zh-TW;q=0.7,zh-CN;q=0.6,zh;q=0.5",
+      "authorization": "e95975fe462564212f9e3a269790564599f31bf4d85e7c1e8075cb46c14321f0",
+      "content-type": "multipart/form-data; boundary=----WebKitFormBoundaryFfjOcu3D9Et37yRL",
+      "sec-ch-ua": "\" Not A;Brand\";v=\"99\", \"Chromium\";v=\"101\", \"Google Chrome\";v=\"101\"",
+      "sec-ch-ua-mobile": "?0",
+      "sec-ch-ua-platform": "\"Windows\"",
+      "sec-fetch-dest": "empty",
+      "sec-fetch-mode": "cors",
+      "sec-fetch-site": "same-origin",
+      "Referer": "https://www.randomanime.org/",
+      "Referrer-Policy": "strict-origin-when-cross-origin"
+    },
+    "body": `------WebKitFormBoundaryFfjOcu3D9Et37yRL\r\nContent-Disposition: form-data; name=\"base\"\r\n\r\nexternal\r\n------WebKitFormBoundaryFfjOcu3D9Et37yRL\r\nContent-Disposition: form-data; name=\"included[]\"\r\n\r\n${genre}\r\n------WebKitFormBoundaryFfjOcu3D9Et37yRL\r\nContent-Disposition: form-data; name=\"external[site]\"\r\n\r\nAniList\r\n------WebKitFormBoundaryFfjOcu3D9Et37yRL\r\nContent-Disposition: form-data; name=\"external[list]\"\r\n\r\n\r\n------WebKitFormBoundaryFfjOcu3D9Et37yRL\r\nContent-Disposition: form-data; name=\"external[onlyMyAnime]\"\r\n\r\nfalse\r\n------WebKitFormBoundaryFfjOcu3D9Et37yRL\r\nContent-Disposition: form-data; name=\"external[username]\"\r\n\r\n${MAL_USERNAME}\r\n------WebKitFormBoundaryFfjOcu3D9Et37yRL--\r\n`,
+    "method": "POST"
+  })
+    .then(data => data.json())
+    .then(res => {
+      console.log(res);
+      return res.results.url
+    });
 };
 
-const getCount = (listInfo) => {
-  return new Promise((resolve, reject) => {
-    const data = {
-      "page": 1,
-      "listUrl": listInfo.result.url,
-      "listIds": listInfo.result.ids
-    };
-
-    request.post(
-      {
-        url: GET_URL,
-        body: data,
-        json: true
-      },
-      (err, res, body) => {
-        if (err) {
-          return reject(err);
-        }
-        return resolve(body);
-      });
-  });
+const getCount = (listId) => {
+  return fetch(`https://www.randomanime.org/api/list/custom?id=${listId}&page=1`, {
+    "headers": {
+      "accept": "application/json, text/plain, */*",
+      "accept-language": "en-US,en;q=0.9,fr;q=0.8,zh-TW;q=0.7,zh-CN;q=0.6,zh;q=0.5",
+      "authorization": "e95975fe462564212f9e3a269790564599f31bf4d85e7c1e8075cb46c14321f0",
+      "sec-ch-ua": "\" Not A;Brand\";v=\"99\", \"Chromium\";v=\"101\", \"Google Chrome\";v=\"101\"",
+      "sec-ch-ua-mobile": "?0",
+      "sec-ch-ua-platform": "\"Windows\"",
+      "sec-fetch-dest": "empty",
+      "sec-fetch-mode": "cors",
+      "sec-fetch-site": "same-origin",
+      "Referer": "https://www.randomanime.org/custom-list/?l=987bc2&view=single&lang=any",
+      "Referrer-Policy": "strict-origin-when-cross-origin"
+    },
+    "body": null,
+    "method": "GET"
+  })
+    .then(data => data.json());
 };
 
 /**
@@ -105,7 +99,7 @@ const getSingleCount = (genre) => {
     getLists(genre)
       .then(getCount)
       .then((body) => {
-        genreCount[genre] = body.result.list_ids.split(",").length;
+        genreCount[genre] = body.resultsTotal;
         resolve(genreCount);
       })
       .catch((err) => {
@@ -125,12 +119,12 @@ const getAllCounts = () => {
     const genreCount = {};
     const promises = [];
 
-    for (const genre in GENRES) {
+    for (const genre of GENRES) {
       promises.push(
         getLists(genre)
           .then(getCount)
           .then((body) => {
-            genreCount[genre] = body.result.list_ids.split(",").length;
+            genreCount[genre] = body.resultsTotal;
           })
           .catch((err) => {
             console.log("Something bad happened!\n", err);
@@ -150,4 +144,9 @@ const getAllCounts = () => {
   });
 };
 
-module.exports = { getSingleCount, getAllCounts, GENRES };
+getAllCounts()
+  .then(res => {
+    console.log(res);
+  });
+
+export { getSingleCount, getAllCounts, GENRES };
