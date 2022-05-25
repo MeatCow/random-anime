@@ -1,8 +1,6 @@
 import fetch from "node-fetch";
 
 const POST_URL = "https://www.randomanime.org/api/list/custom";
-const GET_URL = "https://www.randomanime.org/api/custom-list/get/";
-let MAL_USERNAME = "yaxkin";
 
 const GENRES = [
   "Action",
@@ -40,8 +38,8 @@ const GENRES = [
  * String of the Genre to lookup, "Action"
  * @param {Number} genre
  */
-const getLists = (genre) => {
-  return fetch("https://www.randomanime.org/api/list/custom", {
+const getLists = (genre, MAL_USERNAME = "yaxkin") => {
+  return fetch(POST_URL, {
     "headers": {
       "accept": "application/json, text/plain, */*",
       "accept-language": "en-US,en;q=0.9,fr;q=0.8,zh-TW;q=0.7,zh-CN;q=0.6,zh;q=0.5",
@@ -92,11 +90,11 @@ const getCount = (listId) => {
  * @param {String} genre lowercase string, like isekai
  * @returns an object like { isekai: 349 }
  */
-const getSingleCount = (genre) => {
+const getSingleCount = (genre, MAL_USERNAME = "yaxkin") => {
   return new Promise((resolve, reject) => {
     const genreCount = {};
 
-    getLists(genre)
+    getLists(genre, MAL_USERNAME)
       .then(getCount)
       .then((body) => {
         genreCount[genre] = body.resultsTotal;
@@ -113,7 +111,7 @@ const getSingleCount = (genre) => {
  * Performs a network fetch against the random anime list website.
  * @returns A promise that will contain an object of genres with their count of animes
  */
-const getAllCounts = () => {
+const getAllCounts = (MAL_USERNAME = "yaxkin") => {
   return new Promise((resolve, reject) => {
 
     const genreCount = {};
@@ -121,7 +119,7 @@ const getAllCounts = () => {
 
     for (const genre of GENRES) {
       promises.push(
-        getLists(genre)
+        getLists(genre, MAL_USERNAME)
           .then(getCount)
           .then((body) => {
             genreCount[genre] = body.resultsTotal;
@@ -135,7 +133,6 @@ const getAllCounts = () => {
     Promise.all(promises)
       .then(() => {
         const sortedGenreCount = Object.fromEntries(Object.entries(genreCount).sort());
-        console.log(sortedGenreCount);
         resolve(sortedGenreCount);
       })
       .catch((err) => {
@@ -143,10 +140,5 @@ const getAllCounts = () => {
       });
   });
 };
-
-getAllCounts()
-  .then(res => {
-    console.log(res);
-  });
 
 export { getSingleCount, getAllCounts, GENRES };
