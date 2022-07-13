@@ -142,7 +142,10 @@ const getCount = (listId: string): Promise<ListResponse> => {
  * @param {String} genre lowercase string, like isekai
  * @returns an object like { isekai: 349 }
  */
-const getSingleCount = (genre: Genre, AL_USERNAME: string) => {
+const getSingleCount = (
+  genre: Genre,
+  AL_USERNAME: string
+): Promise<GenreCount> => {
   return new Promise((resolve, reject) => {
     const genreCount: GenreCount = {};
 
@@ -163,10 +166,10 @@ const getSingleCount = (genre: Genre, AL_USERNAME: string) => {
  * Performs a network fetch against the random anime list website.
  * @returns A promise that will contain an object of genres with their count of animes
  */
-const getAllCounts = (AL_USERNAME: string) => {
+const getAllCounts = (AL_USERNAME: string): Promise<GenreCount> => {
   return new Promise((resolve, reject) => {
     const genreCount: GenreCount = {};
-    const promises = [];
+    const promises: Promise<void>[] = [];
 
     for (const genre of GENRES) {
       promises.push(
@@ -183,7 +186,7 @@ const getAllCounts = (AL_USERNAME: string) => {
 
     Promise.all(promises)
       .then(() => {
-        const sortedGenreCount = Object.fromEntries(
+        const sortedGenreCount: GenreCount = Object.fromEntries(
           Object.entries(genreCount).sort()
         );
         resolve(sortedGenreCount);
