@@ -1,5 +1,5 @@
-import { getSingleCount, getAllCounts, GENRES } from './anime-fetcher.js';
-import express from 'express';
+import { getSingleCount, getAllCounts, GENRES } from "./src/anime-fetcher.js";
+import express from "express";
 
 const PORT = 8080;
 const app = express();
@@ -12,10 +12,10 @@ app.get("/genres/:genre", (req, res) => {
   }
 
   getSingleCount(genre)
-    .then(count => {
+    .then((count) => {
       res.status(200).send(count);
     })
-    .catch(err => {
+    .catch((err) => {
       console.log("something went wrong");
       res.status(500).json("Sorry, something went wrong on our end.");
     });
@@ -23,10 +23,10 @@ app.get("/genres/:genre", (req, res) => {
 
 app.get("/genres", (req, res) => {
   getAllCounts()
-    .then(count => {
+    .then((count) => {
       res.status(200).send(count);
     })
-    .catch(err => {
+    .catch((err) => {
       console.log("something went wrong");
       res.status(500).json("Sorry, something went wrong on our end.");
     });
@@ -35,7 +35,7 @@ app.get("/genres", (req, res) => {
 app.all("*", (req, res) => {
   let message = {
     message: "You seem lost. You can only perform gets on the following genres",
-    GENRES
+    GENRES,
   };
   res.status(404).json(message);
 });
