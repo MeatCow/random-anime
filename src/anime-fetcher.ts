@@ -1,78 +1,7 @@
 import fetch from "node-fetch";
+import { Genre, GenreCount, GENRES, ListResponse, URLResponse } from "../lib/types.js";
 
 const POST_URL = "https://www.randomanime.org/api/list/custom";
-
-const GENRES = [
-  "Action",
-  "Adventure",
-  "Comedy",
-  "Drama",
-  "Ecchi",
-  "Fantasy",
-  "Game",
-  "Harem",
-  "Historical",
-  "Horror",
-  "Isekai",
-  "Magic",
-  "Mecha",
-  "Military",
-  "Music",
-  "Mystery",
-  "Parody",
-  "Psychological",
-  "Romance",
-  "School",
-  "Sci-Fi",
-  "Seinen",
-  "Shoujo",
-  "Shounen",
-  "Slice of Life",
-  "Sports",
-  "Supernatural",
-  "Yaoi",
-  "Yuri",
-] as const;
-
-type Genre = typeof GENRES[number];
-
-interface AnilistEntry {
-  id: string;
-  ani_list_id: string;
-  my_anime_list_id: string;
-  name: string;
-  english_name: string;
-  description: string;
-  ani_list_score: string;
-  my_anime_list_score: string;
-  episodes: string;
-  episode_duration: string;
-  release_date: string;
-  tv_rating: string;
-  source: string;
-  trailer: string;
-  rad_date: string;
-  handle: string;
-  genres: Genre[];
-  links: object[];
-  loc: number;
-}
-
-interface ListResponse {
-  status: number;
-  results: AnilistEntry[];
-  resultsTotal: number;
-  genres: Genre[];
-}
-
-interface URLResponse {
-  status: number;
-  results: { url: string };
-}
-
-type GenreCount = {
-  [key in Genre]?: number;
-};
 
 /**
  * Return the randomanime.org url for a randomized list.
@@ -197,4 +126,4 @@ const getAllCounts = (AL_USERNAME: string): Promise<GenreCount> => {
   });
 };
 
-export { getSingleCount, getAllCounts, GENRES, Genre };
+export { getSingleCount, getAllCounts };

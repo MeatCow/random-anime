@@ -6,7 +6,7 @@
   "main": "yaxkin-remaining.js",
   "scripts": {
     "build": "tsc",
-    "yaxkin": "(tsc && node dist/yaxkin-remaining.js)"
+    "yaxkin": "(tsc && node dist/src/yaxkin-remaining.js)"
   },
   "keywords": [],
   "author": "",
