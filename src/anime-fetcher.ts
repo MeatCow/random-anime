@@ -110,8 +110,8 @@ const getCount = (listId: string): Promise<ListResponse> => {
  * @returns an object like { isekai: 349 }
  */
 const getSingleCount = (
-  genre: Genre,
-  AL_USERNAME: string
+  AL_USERNAME: string,
+  genre: Genre
 ): Promise<GenreCount> => {
   return new Promise((resolve, reject) => {
     const genreCount: GenreCount = { ...EMPTY_COUNT };

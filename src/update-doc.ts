@@ -4,12 +4,13 @@ import { GenreCount } from "../lib/types";
 
 /**
  * Replaces the values of the 2nd row in the google sheet with the values passed in as parameters
- * @param values
+ * @param values A GenreCount object containing the mapping of genres and their counts
+ * @param isProd Determines whether we pull the sheet ID from the TEST_SHEET or PROD_SHEET env variables
  */
 export const updateValues = async (values: GenreCount, isProd: boolean) => {
   let sheetId = process.env.TEST_SHEET;
   if (isProd) {
-    sheetId = process.env.REAL_SHEET;
+    sheetId = process.env.PROD_SHEET;
   }
 
   const doc = new GoogleSpreadsheet(sheetId);
