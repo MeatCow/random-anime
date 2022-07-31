@@ -1,5 +1,43 @@
 import fetch from "node-fetch";
-import { Genre, GenreCount, GENRES, ListResponse, URLResponse } from "../lib/types.js";
+import {
+  Genre,
+  GenreCount,
+  GENRES,
+  ListResponse,
+  URLResponse,
+} from "../lib/types.js";
+
+const EMPTY_COUNT = {
+  Action: 0,
+  Adventure: 0,
+  Comedy: 0,
+  Drama: 0,
+  Ecchi: 0,
+  Fantasy: 0,
+  Game: 0,
+  Harem: 0,
+  Historical: 0,
+  Horror: 0,
+  Isekai: 0,
+  Magic: 0,
+  Mecha: 0,
+  Military: 0,
+  Music: 0,
+  Mystery: 0,
+  Parody: 0,
+  Psychological: 0,
+  Romance: 0,
+  School: 0,
+  "Sci-Fi": 0,
+  Seinen: 0,
+  Shoujo: 0,
+  Shounen: 0,
+  "Slice of Life": 0,
+  Sports: 0,
+  Supernatural: 0,
+  Yaoi: 0,
+  Yuri: 0,
+};
 
 const POST_URL = "https://www.randomanime.org/api/list/custom";
 
@@ -76,7 +114,7 @@ const getSingleCount = (
   AL_USERNAME: string
 ): Promise<GenreCount> => {
   return new Promise((resolve, reject) => {
-    const genreCount: GenreCount = {};
+    const genreCount: GenreCount = { ...EMPTY_COUNT };
 
     getLists(genre, AL_USERNAME)
       .then(getCount)
@@ -97,7 +135,7 @@ const getSingleCount = (
  */
 const getAllCounts = (AL_USERNAME: string): Promise<GenreCount> => {
   return new Promise((resolve, reject) => {
-    const genreCount: GenreCount = {};
+    const genreCount: GenreCount = { ...EMPTY_COUNT };
     const promises: Promise<void>[] = [];
 
     for (const genre of GENRES) {
@@ -117,7 +155,7 @@ const getAllCounts = (AL_USERNAME: string): Promise<GenreCount> => {
       .then(() => {
         const sortedGenreCount: GenreCount = Object.fromEntries(
           Object.entries(genreCount).sort()
-        );
+        ) as GenreCount;
         resolve(sortedGenreCount);
       })
       .catch((err) => {

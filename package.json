@@ -3,12 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "type": "module",
-  "main": "yaxkin-remaining.js",
+  "main": "print-yaxkin.js",
   "scripts": {
     "build": "tsc",
-    "yaxkin": "tsc && node dist/src/yaxkin-remaining.js",
-    "test": "tsc && node dist/src/update-doc.js",
-    "update": "node dist/src/update-doc.js"
+    "start": "node dist/src/index.js true",
+    "test": "node dist/src/index.js false"
   },
   "keywords": [],
   "author": "",

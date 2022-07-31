@@ -33,7 +33,7 @@ export const GENRES = [
 export type Genre = typeof GENRES[number];
 
 export type GenreCount = {
-  [key in Genre as string]?: number;
+  [key in Genre]: number;
 };
 
 export interface AnilistEntry {

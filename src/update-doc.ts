@@ -2,8 +2,17 @@ import { GoogleSpreadsheet, GoogleSpreadsheetRow } from "google-spreadsheet";
 import "dotenv/config";
 import { GenreCount } from "../lib/types";
 
-export const updateValues = async (values: GenreCount) => {
-  const doc = new GoogleSpreadsheet(process.env.TEST_SHEET);
+/**
+ * Replaces the values of the 2nd row in the google sheet with the values passed in as parameters
+ * @param values
+ */
+export const updateValues = async (values: GenreCount, isProd: boolean) => {
+  let sheetId = process.env.TEST_SHEET;
+  if (isProd) {
+    sheetId = process.env.REAL_SHEET;
+  }
+
+  const doc = new GoogleSpreadsheet(sheetId);
 
   if (typeof process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL !== "string") {
     throw "Missing GOOGLE_SERVICE_ACCOUNT_EMAIL from environment variable";
