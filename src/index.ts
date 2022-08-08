@@ -11,5 +11,9 @@ for (const genre in data) {
   console.log(`${genre}${SEPERATOR}${data[genre as Genre]}`);
 }
 
-const isProd = JSON.parse(process.argv[2]);
-updateValues(data, isProd);
+try {
+  const isProd = JSON.parse(process.argv[2]);
+  updateValues(data, isProd);
+} catch (e) {
+  console.error(e);
+}
