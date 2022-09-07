@@ -36,6 +36,8 @@ export type GenreCount = {
   [key in Genre]: number;
 };
 
+export type HttpMethod = "POST" | "GET" | "PUT" | "DELETE";
+
 export interface AnilistEntry {
   id: string;
   ani_list_id: string;
