@@ -88,7 +88,7 @@ const apiFetch = (
   body: string | null,
   retries = 3,
   retryDelay = 1000
-) => {
+): Promise<ListResponse> => {
   return new Promise((resolve, reject) => {
     const wrapper = (n: number) => {
       fetch(url, {
