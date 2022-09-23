@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "type": "module",
-  "main": "print-yaxkin.js",
+  "main": "src/index.ts",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/src/index.js true",
-    "test": "node dist/src/index.js false"
+    "update": "node dist/src/index.js true",
+    "test-update": "node dist/src/index.js false",
+    "serve": "tsc && node dist/server.js"
   },
   "keywords": [],
   "author": "",

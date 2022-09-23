@@ -1,14 +1,14 @@
-import { getSingleCount, getAllCounts } from "./services/AnimeService";
-import { GENRES } from "./lib/types";
+import { getSingleCount, getAllCounts } from "./services/AnimeService.js";
+import { GENRES } from "./lib/types.js";
 import express, { Request, Response } from "express";
-import { isGenre } from "./util/helpers";
+import { isGenre } from "./util/helpers.js";
 
 const PORT = 8080;
 const AL_USERNAME = "yaxkin";
 const app = express();
 
 app.get("/genres/:genre", async (req: Request, res: Response) => {
-  const genre = req.params.genre.toLowerCase();
+  const genre = req.params.genre;
 
   if (!isGenre(genre)) {
     return res.status(404).send("No such genre");
@@ -18,6 +18,8 @@ app.get("/genres/:genre", async (req: Request, res: Response) => {
     const count = await getSingleCount(genre, AL_USERNAME);
     return res.status(200).send(count);
   } catch (e) {
+    console.log(e);
+
     return res.status(500).send("Sorry, something went wrong on our end.");
   }
 });
@@ -38,4 +40,4 @@ app.all("*", (req: Request, res: Response) =>
   })
 );
 
-app.listen(PORT);
+app.listen(PORT, () => console.log("Running on", PORT));

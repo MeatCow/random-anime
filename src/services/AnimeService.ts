@@ -7,7 +7,8 @@ import {
   ListResponse,
   URLResponse,
 } from "../lib/types.js";
-import { EMPTY_COUNT } from "../lib/EMPTY_COUNT";
+import { EMPTY_COUNT } from "../lib/EMPTY_COUNT.js";
+import { Response } from "node-fetch";
 
 const POST_URL = "https://www.randomanime.org/api/list/custom";
 const delay = (ms: number): Promise<void> =>
@@ -20,24 +21,23 @@ const delay = (ms: number): Promise<void> =>
  * @param AL_USERNAME Anilist username for which we generate urls
  * @returns A Promise to the url value
  */
-const getLists = (genre: Genre, AL_USERNAME: string): Promise<string> => {
-  return apiFetch(
-    POST_URL,
-    "POST",
-    `------WebKitFormBoundaryFfjOcu3D9Et37yRL\r\nContent-Disposition: form-data; name=\"base\"\r\n\r\nexternal\r\n------WebKitFormBoundaryFfjOcu3D9Et37yRL\r\nContent-Disposition: form-data; name=\"included[]\"\r\n\r\n${genre}\r\n------WebKitFormBoundaryFfjOcu3D9Et37yRL\r\nContent-Disposition: form-data; name=\"external[site]\"\r\n\r\nAniList\r\n------WebKitFormBoundaryFfjOcu3D9Et37yRL\r\nContent-Disposition: form-data; name=\"external[list]\"\r\n\r\n\r\n------WebKitFormBoundaryFfjOcu3D9Et37yRL\r\nContent-Disposition: form-data; name=\"external[onlyMyAnime]\"\r\n\r\nfalse\r\n------WebKitFormBoundaryFfjOcu3D9Et37yRL\r\nContent-Disposition: form-data; name=\"external[username]\"\r\n\r\n${AL_USERNAME}\r\n------WebKitFormBoundaryFfjOcu3D9Et37yRL--\r\n`
-  )
-    .then((data) => data.json() as Promise<URLResponse>)
-    .then((res: URLResponse) => {
-      return res.results.url;
-    });
+const getLists = async (genre: Genre, AL_USERNAME: string): Promise<string> => {
+  const url = (
+    await apiFetch(
+      POST_URL,
+      "POST",
+      `------WebKitFormBoundaryFfjOcu3D9Et37yRL\r\nContent-Disposition: form-data; name=\"base\"\r\n\r\nexternal\r\n------WebKitFormBoundaryFfjOcu3D9Et37yRL\r\nContent-Disposition: form-data; name=\"included[]\"\r\n\r\n${genre}\r\n------WebKitFormBoundaryFfjOcu3D9Et37yRL\r\nContent-Disposition: form-data; name=\"external[site]\"\r\n\r\nAniList\r\n------WebKitFormBoundaryFfjOcu3D9Et37yRL\r\nContent-Disposition: form-data; name=\"external[list]\"\r\n\r\n\r\n------WebKitFormBoundaryFfjOcu3D9Et37yRL\r\nContent-Disposition: form-data; name=\"external[onlyMyAnime]\"\r\n\r\nfalse\r\n------WebKitFormBoundaryFfjOcu3D9Et37yRL\r\nContent-Disposition: form-data; name=\"external[username]\"\r\n\r\n${AL_USERNAME}\r\n------WebKitFormBoundaryFfjOcu3D9Et37yRL--\r\n`
+    )
+  ).json() as Promise<URLResponse>;
+  return (await url).results.url;
 };
 
 const getCount = async (listId: string): Promise<ListResponse> => {
-  const response = await apiFetch(
+  const response = (await apiFetch(
     `https://www.randomanime.org/api/list/custom?id=${listId}&page=1`,
     "GET",
     null
-  );
+  )) as any;
   return response.json() as Promise<ListResponse>;
 };
 
@@ -88,7 +88,7 @@ const apiFetch = (
   body: string | null,
   retries = 3,
   retryDelay = 1000
-): Promise<ListResponse> => {
+): Promise<Response> => {
   return new Promise((resolve, reject) => {
     const wrapper = (n: number) => {
       fetch(url, {

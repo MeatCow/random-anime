@@ -1,5 +1,5 @@
-import { Genre, GENRES } from "../lib/types";
+import { Genre, GENRES } from "../lib/types.js";
 
-export function isGenre(value: string): value is Genre {
-  return Object.keys(GENRES).includes(value);
+export function isGenre(value: any): value is Genre {
+  return Object.values(GENRES).includes(value);
 }
