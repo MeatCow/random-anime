@@ -1,6 +1,6 @@
-import { Genre } from "../lib/types.js";
-import { getAllCounts } from "./anime-fetcher.js";
-import { updateValues } from "./update-doc.js";
+import { Genre } from "./lib/types.js";
+import { getAllCounts } from "./services/AnimeService.js";
+import { updateValues } from "./util/update-doc.js";
 
 const SEPERATOR = ":";
 const USERNAME = "yaxkin";
