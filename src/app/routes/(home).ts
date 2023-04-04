@@ -10,7 +10,7 @@ import { AnimeService } from '../services/anime.service';
   imports: [CommonModule, GenreCounterComponent],
 })
 export default class HomeComponent {
-  animes$ = this.animeService.getGenres();
+  animes$ = this.animeService.getGenres('yaxkin');
 
   constructor(private animeService: AnimeService) {}
 }

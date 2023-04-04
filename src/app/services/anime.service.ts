@@ -8,7 +8,7 @@ import { Genre, GenreResponse } from 'src/lib/models/types';
 export class AnimeService {
   constructor(private client: HttpClient) {}
 
-  getGenres = (name: string) =>
+  getGenres = (name = '') =>
     this.client.get<GenreResponse[]>(`${this.base()}/api/v1/anime/${name}`);
 
   private base = () => window.location.protocol + '//' + window.location.host;
