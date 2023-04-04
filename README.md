@@ -1,36 +1,27 @@
-# Random Anime
+# RandomAnime
 
-Personal tool.
-Used to grab genre counts from [Random-Anime](https://www.randomanime.org/), based on Anilist username.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.1.0.
 
-## Example
+## Development server
 
-Example usage can be seen in the index.ts file.
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
-Usage is as easy as calling the `getAllCounts(alUsername)` or `getSingleCount(alUsername, genre)` functions and awaiting their response.
+## Code scaffolding
 
-```ts
-import { Genre } from "../lib/types.js";
-import { getAllCounts } from "./anime-fetcher.js";
-import { updateValues } from "./update-doc.js";
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-const SEPERATOR = ":";
-const USERNAME = "yaxkin";
+## Build
 
-const data = await getAllCounts(USERNAME);
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
-for (const genre in data) {
-  console.log(`${genre}${SEPERATOR}${data[genre as Genre]}`);
-}
+## Running unit tests
 
-const isProd = JSON.parse(process.argv[2]);
-updateValues(data, isProd);
-```
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## Features
+## Running end-to-end tests
 
-- Promise based API
+Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
 
-- If you'd rather have an express server to feed you JSON data, you can run the fetch-server.js file instead (WIP).
+## Further help
 
-- The update-doc.ts file exports functions used to update a google sheets document. Somewhat static since I don't ever expect anyone else to use this (Updates the 2nd row and expect a format to the document)
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
