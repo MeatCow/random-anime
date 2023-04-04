@@ -1,4 +1,4 @@
-export const GENRES = [
+export const GenreList = [
   'Action',
   'Adventure',
   'Comedy',
@@ -30,9 +30,12 @@ export const GENRES = [
   'Yuri',
 ] as const;
 
-export type Genre = typeof GENRES[number];
+export type Genre = typeof GenreList[number];
 
-export type HttpMethod = 'POST' | 'GET' | 'PUT' | 'DELETE';
+export interface GenreResponse {
+  genre: Genre;
+  count: number;
+}
 
 export interface AnilistEntry {
   id: string;
@@ -54,16 +57,4 @@ export interface AnilistEntry {
   genres: Genre[];
   links: object[];
   loc: number;
-}
-
-export interface ListResponse {
-  status: number;
-  results: AnilistEntry[];
-  resultsTotal: number;
-  genres: Genre[];
-}
-
-export interface URLResponse {
-  status: number;
-  results: { url: string };
 }

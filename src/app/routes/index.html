@@ -1,0 +1,13 @@
+<header class="flex justify-center mb-10">
+  <h1 class="text-3xl font-medium">Here are this week's anime numbers</h1>
+</header>
+<main *ngIf="{animes: animes$ | async} as data">
+  <div class="grid grid-cols-8 gap-6">
+    <ng-container *ngFor="let anime of data.animes">
+      <app-genre-counter
+        [genre]="anime.genre"
+        [count]="anime.count"
+      ></app-genre-counter>
+    </ng-container>
+  </div>
+</main>

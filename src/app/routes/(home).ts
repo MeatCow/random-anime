@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { GenreCounterComponent } from '../components/genre-counter/genre-counter.component';
+import { AnimeService } from '../services/anime.service';
 
 @Component({
   selector: 'app-home',
@@ -8,4 +9,8 @@ import { GenreCounterComponent } from '../components/genre-counter/genre-counter
   templateUrl: './index.html',
   imports: [CommonModule, GenreCounterComponent],
 })
-export default class HomeComponent {}
+export default class HomeComponent {
+  animes$ = this.animeService.getGenres();
+
+  constructor(private animeService: AnimeService) {}
+}
